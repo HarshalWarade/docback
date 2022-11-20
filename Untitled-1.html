@@ -1,0 +1,24 @@
+
+        <h3>Sending data in the database</h3>
+        <pre><code class="language-console">app.post('/register', function (req, res){
+const { name, email, phone, password, cpassword } = req.body;
+if (!name || !email || !phone || !password || !cpassword){
+    return res.status(422).json({ error: "Please fill the missing fields!" });
+}
+User.findOne({ email: email }).then(function (userExist){
+    // If user is already present in the database;
+    if (userExist){
+        return res.status(422).json({ error: "Email already registered" });
+    }
+    // Creating new user account in the database;
+    const user = new User({ name, email, phone, password, cpassword });
+    // Saving the userData
+    user.save().then(function(){
+        res.status(201).json({message: "User registered"});
+    }).catch(function(err){
+        res.status(500).json({error: "Failed to register"});
+    });
+        }).catch(function(err){
+            console.log(err);
+    })
+});</code></pre>

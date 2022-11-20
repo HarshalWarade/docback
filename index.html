@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BackendDocumentation | Harshal Proejects</title>
+    <link rel="stylesheet" href="prism.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- <a href="#" id="menu"><ion-icon name="menu-outline"></ion-icon></a> -->
+    <div class="heading">
+        <p>BackendDocumentation (MERN STACK)</p>
+    </div>
+    <div id="mainContainer">
+        <div class="table">
+            <div>
+                <a href="#started" class="fonts">Get Started</a>
+                <a href="#includeejs" class="fonts">Including styles in ejs</a>
+                <a href="#form" class="fonts">Creating a basic Signup and login form (Best project to learn)</a>
+                <a href="#access" class="fonts">Allowing access to the specific user</a>
+                <a href="#hashing">Password Hashing</a>
+                <a href="#token" class="fonts">Using jsonwebtoken</a>
+                <a href="#authenticate" class="fonts">Authenticate the user</a>
+            </div>
+        </div>
+        <div class="content">
+            <h2 id="started" class="no-padding">Get started</h2>
+            <hr>
+            <br>
+            <p>To begin, create an empty JavaScript file (say, app.js) and launch the terminal by pressing Ctrl+Shift+'. This will give you an empty teminal. Begin by initializing the npm. Enter the following code into the terminal.
+            </p>
+            <pre><code class="language-console">npm init -y</code></pre>
+            <p>Once the process is finished (this will be an automatic process because we included "-y" in the command. If you want it to be a manual process, remove the "-y" and adjust the details accordingly), press Enter. Install the necessary dependencies, such as express, mongoose, ejs, pug, and so on. This can be accomplished by inserting the lines into the terminal.
+            </p>
+            <pre><code class="language-console">npm i express</code></pre>
+            <p>Then, in the main javascript file, begin by requiring those packages.</p>
+            <pre><code class="language-js">const express = require('express');
+    const app = express();
+    const port = process.env.PORT || 80;
+    app.get('/', function(req, res){
+        return res.send(`Basic message on the localhost`);
+    }).listen(port, (err)=>{if(err==true){console.log(`Error occured: ${err}`)}
+        else{
+            console.log(`Application is running on the port ${port}`);
+        };
+    });</code></pre>
+            <br>
+            <hr>
+            <br>
+            <p>So far, we've only created a simple server that does nothing more than display plain text. There are ways to get your app into production, such as <b>Instagram</b> or <b>Facebook</b>. Simply follow my instructions.
+            </p>
+
+            <p>You will most likely need a basic homepage to display to the user. It could be a signup or login page, or it could be the main page you want to show your user. We will not use direct HTML for this purpose. We will employ <b>ejs</b> (Embedded Javascript). It's not a big deal if you use <b>pug</b> or <b>handlebars</b>. But you must understand how they work.</p>
+            <p>To use <b>ejs</b>, you must first install it. To do so, enter the following command in the terminal (hopefully you did this before, but it doesn't matter if you do it more than once).</p>
+            <pre><code class="language-console">npm install ejs</code></pre>
+            <p>Or you can use <b>Pug</b> as well.</p>
+            <pre><code class="language-console">npm install pug</code></pre>
+            <p>Our main concern is <b>ejs</b>. Once you've installed ejs, you'll need to create files like home, about, and so on. It is recommended that you save them in a folder called <b>"views"</b> and include the line below in your root file.</p>
+            <pre><code class="language-js">const path = require('path');
+    app.set("view engine", "ejs");
+    app.set("views", path.join(__dirname, "views"));</code></pre>
+            <p>You <b>don't</b> need to learn ejs. The only difference between ejs and html is, in ejs you can use
+                <b>variables from backend</b>, that html does not support. Hence we used ejs. A basic ejs file (say
+                <b>home.ejs</b> will look like this).
+            </p>
+            <pre><code class="language-html">&lt;!DOCTYPE html>
+    &lt;html lang="en">
+    &lt;head>
+        &lt;meta charset="UTF-8">
+        &lt;meta http-equiv="X-UA-Compatible" content="IE=edge">
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+        &lt;title>&lt;%=title%>&lt;/title>
+    &lt;/head>
+    &lt;body>
+        &lt;h1>It's this simple&lt;/h1>
+        &lt;!-- "&lt;%%>" -- This is used to use variable from backend to ejs file -->
+        &lt;!-- "&lt;%=variable_name%>" -- This is used to use and display the variable from backend ejs file -->
+    &lt;/body>
+    &lt;/html></code></pre>
+            <p>Once you did this, render this basic created ejs file as a <b>"/" get request</b>, please note that we
+                have
+                used <b>&lt;%=title%></b> in the <b>title</b> tags. This place will be filled when the same named data
+                is
+                entered through backend. We will see this in the further document.</p>
+            <br>
+            <hr><br>
+            <p>Now, we are ready with the first page to be rendered in the server as the main page. To do so, open your
+                root
+                file and add the below code to it.</p>
+            <pre><code class="language-js">app.get("/", function(req, res){
+        return res.status(200).render('home', {title: "dynamicTitle"});
+    });</code></pre>
+            <p>Run your project using <b>"nodemon ./app.js"</b> in the terminal (or you can run using other methods in
+                which
+                you need to change the script in your <b>package.json</b> file). Open up the browser and type
+                <b>localhost:80</b> to run your project (or anyother port mentioned in your <b>const port =
+                    process.env.PORT
+                    || "your custom value"</b>). You will see the page that you just created using ejs and the title
+                should
+                have been changed to the one added in <b>&lt;%=title%></b> in this case it was <b>"dynamicTitle"</b>.
+            </p>
+            <p>Now the basic project has been created in which you created a server and made a basic ejs file to render
+                on
+                the page, at least to display the frontend.</p>
+            <br>
+            <h2 id="includeejs">Including styles in ejs <a href="#includeejs" class="top-links">#</a></h2>
+            <hr>
+            <br>
+            <p>If you want to get rid of adding <b>css</b> in the ejs file, then here's a way you can actually code css
+                in
+                css file and link it to the ejs file. Just add this below lines in your root file.</p>
+            <pre><code class="language-js">app.use(express.static('assets'));</code></pre>
+            <p>and later create a folder named <b>"assets"</b> and in that folder create another folder named
+                <b>"css"</b>
+                in that folder create a file named <b>"style.css"</b>. Your all done to link this file in that directory
+                to
+                your ejs file. Add below line to your <b>"home.ejs"</b> file.</p>
+            <pre><code class="language-html">&lt;link rel="stylesheet" href="/css/style.css"></code></pre>
+            <p>There you go, now the css should be fully working with your ejs file. If not, check the directories and
+                change accordingly.</p>
+            <p>In this same way you can host multiple files in different routes. Such as your can create
+                <b>"about.ejs"</b>
+                and add a route as below: </p>
+            <pre><code class="language-js">app.get("/about", function(req, res){
+    return res.status(200).render("about");
+});</code></pre>
+            <br>
+            <h2 id="form">Creating a basic Signup and login form (Best project to learn) <a href="#form"
+                    class="top-links">#</a></h2>
+            <hr>
+            <br>
+            <p>To get started with creating a basic Register (Sign Up) and Log in form, you would first need to define a
+                thing, that is called as <b>USERSCHEMA</b>. UserSchema is a way, or to be very specific, it is a
+                structure
+                through which you tell your database to store the database in a particular structure, and the structure
+                in
+                which the data is going to be stored is called as the userSchema. For defining userSchema in an
+                efficient
+                way, start off with creating a new folder named <b>Models</b> in the root directory, inside the folder
+                create a file named <b>userSchema.js</b>. The basic content of the file can be copy pasted from below
+                code.
+            </p>
+            <pre><code class="language-js">const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },username: {
+        type: String,
+        required: true
+    },email: {
+        type: String,
+        required: true
+    },phonenumber: {
+        type: Number,
+        required: true
+    },password: {
+        type: String,
+        required: true
+    },cpassword: {
+        type: String,
+        required: true
+    },dob: {
+        type: String,
+        required: true
+    },occupation: {
+        type: String,
+        required: true
+    }
+},
+    {
+        timestamps: true
+});
+
+// Password hashing
+userSchema.pre('save', async function (next)
+{
+    console.log("hashWorking...")
+    if (this.isModified('password'))
+    {
+        this.password = await bcrypt.hash(this.password, 12);
+        this.cpassword = await bcrypt.hash(this.cpassword, 12);
+    }
+    next();
+});
+console.log('UserSchema loaded!');
+const User = mongoose.model('USER', userSchema);
+// const ht = User.getUser
+module.exports = User;</code></pre>
+            <p><b><u>Hold on, there are many things you would need to know in order to run the above code</u>.</b>
+                Please
+                take a note that we've included <b>bcryptjs</b> library in the userSchema, the reason to include it is
+                to
+                encrypt the passwords that are being entered in the database, this is to establish a trustable security
+                from
+                our side to the client. We will discuss more about the bcryptjs later in this page.</p>
+            <p>Now, to make that page working, you would need to create a new route which would be
+                <b>app.post('/anyRouteName')</b>. Simply look at the below code and save it in a new file in the
+                <b>views</b> folder created previously, or you can save it in <b>home.ejs</b>. Not a big deal.
+            </p>
+            <pre><code class="language-js">&lt;!DOCTYPE html>
+&lt;html lang="en">
+
+&lt;head>
+    &lt;meta charset="UTF-8">
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge">
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+    &lt;title>SignUp&lt;/title>
+    &lt;link rel="stylesheet" href="/css/style.css">
+    &lt;link rel="stylesheet" href="/css/signup.css">
+&lt;/head>
+
+&lt;body>
+
+    &lt;div id="mainForm">
+        &lt;form action="/registerUser" method="post">
+            &lt;div class="group-them">
+                &lt;input type="text" placeholder="Enter your name here" name="nameautocomplete="offrequired>
+
+                &lt;input type="text" placeholder="Enter username here (Must be uniquename="usernameautocomplete="off"
+                    required>
+            &lt;/div>
+
+            &lt;input type="email" placeholder="Enter email here" name="emailautocomplete="offrequired>
+
+            &lt;input type="number" placeholder="Enter contact number herename="phonenumberautocomplete="off" required>
+
+            &lt;div class="group-them">
+                &lt;input type="password" placeholder="Set your passwordname="passwordautocomplete="off" required>
+
+                &lt;input type="password" placeholder="Confirm Passwordname="cpasswordautocomplete="off" required>
+            &lt;/div>
+
+            &lt;div class="group-them special">
+                &lt;div class="sub-divs">
+                    &lt;label for="userdob" class="label-text">Select your birthdate: &ltlabel>
+                    &lt;input type="date" name="dob" id="userdob" required>
+                &lt;/div>
+                &lt;div class="sub-divs">
+                    &lt;label for="selectOptions" class="label-text">What describes best: &lt;/label>
+                    &lt;select name="occupation" id="selectOptions">
+                        &lt;option value="Farmer">Nothing Selected&lt;/option>
+                        &lt;option value="Farmer">Farmer&lt;/option>
+                        &lt;option value="Programmer">Programmer&lt;/option>
+                        &lt;option value="Teacher">Teacher&lt;/option>
+                        &lt;option value="Doctor">Doctor&lt;/option>
+                        &lt;option value="Student">Student&lt;/option>
+                        &lt;option value="Advocate">Advocate&lt;/option>
+                        &lt;option value="Builder">Builder&lt;/option>
+                    &lt;/select>
+                &lt;/div>
+            &lt;/div>
+            &lt;button type="submit" id="account">Create Account&lt;/button>
+        &lt;/form>
+    &lt;/div>
+&lt;/body>
+
+&lt;/html></code></pre>
+            <p>Well done, if you copied the code and pasted it in the <b>home.ejs</b> file. Now you can directly type
+                the following code in the terminal to run the scripts.</p>
+            <pre><code class="language-js">npm install --save-dev nodemon</code></pre>
+            <p>Hit <kbd>Enter</kbd> after this command, allow the installation to exists. Later type the below lines in
+                the terminal.</p>
+            <pre><code class="language-js">nodemon ./app.js</code></pre>
+            <p>You must see <b>"Application is running on the port 80"</b> in the terminal, if not, just try to figure
+                out the error, that may be detected in the terminal, go to the specific line and edit the code
+                accordingly, not a big issue, or message me through <b>Contact Us</b> section.</p>
+            <p>Now open up the browser, type <b>localhost</b> and hit enter. You must see a form that you just have
+                created in the <b>home.ejs</b> file.</p>
+
+            <h2 id="access">Allowing access to the specific user <a href="#access" class="top-links">#</a></h2>
+            <hr>
+            <br>
+            <p>Now the question arrises, <b>how would you know that it's the same user I need to provide my services to?</b> Fortunately, to tackle this issue, we have different module ready to help us. Amongst many, we will be using <a href="https://www.npmjs.com/package/cookie-parser" class="active-links" target="_blank">cookie-parser</a> and <a href="https://www.npmjs.com/package/jsonwebtoken" class="active-links" target="_blank">jsonwebtoken</a>.</p>
+            <p>To install them, run the following command in the terminal.</p>
+            <pre><code class="language-js">npm i cookie-parser</code></pre>
+            <pre><code class="language-js">npm i jsonwebtoken</code></pre>
+            <p>The password will be hashed when the user registers himself/herself for the first time, later at the time of login we will be fetching the password from the database and later will be comparing it with the hashed password to compare both of them. If the passwords match, with respect to the accurate <b>username</b> entered, then the user will be allowed to login, once he/she logs in, the <b>cookies</b> will be used to save the userdata, to be specific the userdata here is the <b>generated json token</b></p>
+            <br>
+            <h2 id="hashing">Password hashing <a href="#hashing" class="top-links">#</a></h2>
+            <hr><br>
+            <p>Password hashing is done to secure the password from both ends, from the front end as well as the backend. So, in this case neither the browser or the developer is able to see your password. We will use <b>bcryptjs</b> to hash the entered passwords. To use bcryptjs, you would first need to install this dependency.</p>
+            <pre><code class="language-js">npm install bcryptjs</code></pre>
+            <p>Once, it is installed, require it in the user model (userSchema)</p>
+            <pre><code class="language-js">const bcrypt = require('bcryptjs');</code></pre>
+            <p>For hashing the password, and the confirm password (if the field is present), you would need to hash them before they are saved in the database. Add below piece of code before the <b>exports</b>.</p>
+            <pre><code class="language-js">userSchema.pre('save', async function (next)
+{
+    if (this.isModified('password'))
+    {
+        this.password = await bcrypt.hash(this.password, 12);
+        // this.confirmPassword = await bcrypt.hash(this.confirmPassword, 12);
+    }
+    next();
+});</code></pre>
+            <p>Now, the thing comes, how are we gonna compare the password, even we as the developers dont know what are they, nor they are saved in the database. So, to tackle this issue, we have <b>bcrypt.compare</b> to our rescue. This is used to check wheather the user entered password is same as that was hashed during the process.</p>
+            <pre><code class="language-js">const isMatch = await bcrypt.compare(password, userLogin.password);</code></pre>
+            <p>An example of login port is: </p>
+            <pre><code class="language-js">app.post('/loginUser', async function (req, res){
+    const { username, password } = req.body;
+    try {
+        const userLogin = await User.findOne({ username: username });
+        if (userLogin) {
+            const passwordMatch = await bcrypt.compare(password, userLogin.password);
+            if (passwordMatch) {
+                return res.status(200).send('User found!');
+            } else {
+                return res.status(422).send('user not found! Login again with correct details.');
+            }
+        }else {
+            console.log('cant login');
+        }
+    } catch (err) {
+        console.log(err);
+    }
+});</code></pre>
+            <p>Further processes could be done once the password is matched (isMatch == true)</p>
+            <p><b>Don't forget to call the <u>next()</u> after the hashing process.</b></p>
+            <p>Now, the password is hashed.</p>
+            <h2 id="token">Using jsonwebtoken <a href="#token" class="top-links">#</a></h2>
+            <hr>
+            <br>
+            <p>JSONWebToken allows you to get the required user. Example, if there's a user who wants his own data (as obvious case), then jwt helps to do so. Meaning, it is used to authenticate the user. You would also need to use <b>cookies</b> to store the user's data. First of all, add the below lines as dependencies in your project.</p> 
+            <p>First install them, we've already installed them, in case you didn't, just install them using the below code and later require them.</p>
+            <b><u>Installing</u></b>
+            <pre><code class="language-js">npm i jsonwebtoken</code></pre>
+            <pre><code class="language-js">npm i cookie-parser</code></pre>
+            <b><u>Requiring</u></b>
+            <pre><code class="language-js">const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());</code></pre>
+            <p>Start off with adding the below lines in the login route and then procceed further</p>
+            <pre><code class="language-js">const verifyUser = await User.findOne({username: username});
+const token = await verifyUser.generateToken();</code></pre>
+            <p>userSchema is an instance, and while dealing with instances (operations) you need to use <b>methods</b>. So add the below code in the userSchema.js file.</p>
+            <p>Will need to define the userSchema for the generated tokens to save in the database.</p>
+            <pre><code class="language-js">tokens: [{
+    token: {
+        type: String,
+        required: true
+    }
+ }
+]</code></pre>
+            <p>There are basically only two main methods for jwt, they are the <b>jwt.sign</b> and <b>jwt.verify</b>. <b>jwt.sign</b> takes three parametes, that are the <u><b>jwt.sign(payload, secret/privateKey, [options, callback])</b></u>. Add the following code to generate a token.</p>
+            <pre><code class="language-js">userSchema.methods.generateAuthToken = async function () {
+    try {
+        let token = jwt.sign({ _id: this._id }, process.env.SECRETKEY)
+        this.tokens = this.tokens.concat({ token: token });
+        await this.save();
+        return token;
+    } catch (err) {
+        console.log(err);
+    }
+}</code></pre>
+<p>In the above code, <b><u>process.env.SECRETKEY</u></b> is used, this will only work if you have made dotenv as a dependency for your project. If you haven't yet did so, then just <b>install dotenv</b> and later require it.</p>
+<pre><code class="language-console">npm i dotenv</code></pre>
+<p>Now require it: </p>
+<pre><code class="language-js">const dotenv = require('dotenv');
+dotenv.config({ path: 'config.env' });</code></pre>
+<p>To make the second line of the above code logical for your code is to create a file named <b>config.env</b> in your <b>root directory</b> and in that file you must add the below code.</p>
+<pre><code class="language-js">SECRETKEY=JSAHD8429JHASDKJLFHDASFXCX33RESD</code></pre>
+<p>This secret key could literally be <b>anything</b>, but just make sure that it is atleast more than 30 characters. The good fact is, in that field you can write a love message to your girlfriend too.</p>
+<p>It is a very good and an essential practice to keep all of your private data in the config.env file and later ignoring it from the push in the <b>.gitignore</b> file. You must keep your secret <b>connection key/string</b> in this file and later get it in the variable <b>db</b> by assigning it <b>process.env.DATABASE</b>, depends on what name you give it in the config file.</p><br>
+<p>Once, all things above are done successfully, then you may procced to add the <b>generated</b> token in the <b>browser's cookie</b>. You've already installed and setup all the things required to do so. Just add the below code in your rootfile.</p>
+<pre><code class="language-js">res.cookie("jwtoken", token, {
+    expires: new Date(Date.now() + 25892000000),
+    httpOnly: true
+});</code></pre>
+<h2 id="authenticate">Authenticate the user <a href="#authenticate" class="top-links">#</a></h2>
+<hr><br>
+<p>To allow the user to authenticate using the jsonwebtoken, you would need to add a folder in the directory, name it as <b>middleware</b> (or anything you like, but keep it literal) and inside it create a file named as <b>authenticate.js</b> (again, you may name it whatever you want). Just add the below code in that file.</p>
+<pre><code class="language-js">const jwt = require('jsonwebtoken');
+const User = require('../models/userSchema');
+const cookieParser = require('cookie-parser');
+const Authenticate = async (req, res, next) => {
+    try {
+        const token = req.cookies.jwtoken;
+        const verifyToken = jwt.verify(token, process.env.SECRETKEY);
+        const rootUser = await User.findOne({ _id: verifyToken._id, "tokens.token": token });
+        if (!rootUser) {
+            throw new Error('User not found');
+        }
+        req.token = token;
+        // rootUser will get all the document of the specific user.
+        req.rootUser = rootUser;
+        req.userID = rootUser._id;
+        next();
+    } catch (err) {
+            res.status(401).send('Invalid token, login again to continue!');
+    }
+}
+
+module.exports = Authenticate;</code></pre>
+<p>Now, require the file in the main project file.</p>
+<pre><code class="language-js">const authenticate = require('./middleware/authenticate');</code></pre>
+
+<h1>NOW, it is all set for any heavy and complex project.</h1>
+        </div>
+    </div>
+    <script src="prism.js"></script>
+    <script src="logic.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
